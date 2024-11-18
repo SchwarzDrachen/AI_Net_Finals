@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class TestGun : GenericGunScript
 {
+    private void Update(){
+        if(fireRateCountdown > 0){
+            fireRateCountdown -= Time.deltaTime;
+        }
+    }
     public override void Shoot()
     {
-        Instantiate(Bullet,BulletSpawnPosition.transform.position, transform.parent.rotation);
-        Debug.Log("Firing");        
+        if(fireRateCountdown <= 0){
+            Instantiate(Bullet,BulletSpawnPosition.transform.position, transform.parent.rotation);            
+            fireRateCountdown = FireRate; 
+        }
+        
+               
     }
 }

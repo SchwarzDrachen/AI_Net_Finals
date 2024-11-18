@@ -11,5 +11,7 @@ public abstract class GenericGunScript : MonoBehaviour
     [SerializeField]protected float FireRate;
     [SerializeField]protected float Spread;
 
+    protected float fireRateCountdown;
+
     public abstract void Shoot();    
 }
