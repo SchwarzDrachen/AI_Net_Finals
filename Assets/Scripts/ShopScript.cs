@@ -4,9 +4,25 @@ using UnityEngine;
 
 public class ShopScript : GenericInteractableScript
 {
-    public override void Interact()
+    [SerializeField]private GameObject ShopUI;
+    [SerializeField]private int ShopItemList;
+    private GameObject player;
+    private PlayerControllerScript playerScr;
+    public override void Interact(GameObject Player)
     {
-        Debug.Log("Interacted with shop");
+        playerScr = Player.GetComponent<PlayerControllerScript>();
+        
+        ShopUI.SetActive(true); 
+        playerScr.SetCanMove(false);
+
+        this.player = Player;
+    }
+
+    public void CloseShop(){                
+        playerScr.SetCanMove(true);
+        player = null;
+        playerScr = null;
+        ShopUI.SetActive(false);
     }
 
 }
