@@ -14,6 +14,7 @@ public class PlayerControllerScript : MonoBehaviour
     [SerializeField]private GameObject playerSprite;
     [SerializeField]private GameObject currentGun;
     [SerializeField]private float interactDistance;  
+    [SerializeField] private HealthScript healthScr;
 
     [SerializeField]private GameObject InteractionDisplay;
 
@@ -22,6 +23,9 @@ public class PlayerControllerScript : MonoBehaviour
     RaycastHit2D raycast;
     Vector2 mouseWorldPos;
     private void Update(){
+        if(healthScr.isAlive() == false){
+            DoPlayerDeath();
+        }
         if(canMove){
             MovementScript();
             FlipSpriteOnDirection();
@@ -114,6 +118,17 @@ public class PlayerControllerScript : MonoBehaviour
 
     public void SetCanMove(bool value){
         canMove = value;
+    }
+
+    private void DoPlayerDeath(){
+        Debug.Log("Player has died(requires more polishing)");
+    }
+
+     private void OnCollisionEnter2D(Collision2D collider){
+        if(collider.gameObject.CompareTag("Enemy")){
+            healthScr.takeDamage(50);
+            Debug.Log("function requires more polishing");
+        }
     }
 
 
