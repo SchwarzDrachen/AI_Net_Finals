@@ -13,10 +13,8 @@ public class PlayerControllerScript : MonoBehaviour
     [SerializeField]private GameObject playerSprite;
     [SerializeField]private GameObject currentGun;
     [SerializeField]private float interactDistance;  
-
     [SerializeField]private GameObject InteractionDisplay;
     [SerializeField]private Camera camera;
-
     private Vector3 currentSpeed;
     private float timeCounter;
 
