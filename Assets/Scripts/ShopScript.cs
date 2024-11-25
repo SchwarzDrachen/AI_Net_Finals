@@ -5,24 +5,38 @@ using UnityEngine;
 public class ShopScript : GenericInteractableScript
 {
     [SerializeField]private GameObject ShopUI;
-    [SerializeField]private int ShopItemList;
-    private GameObject player;
+    [SerializeField]private GameObject ShopItemListBox;
+    private List<ShopItemScript> ShopItemList = new();    
     private PlayerControllerScript playerScr;
+    
+
     public override void Interact(GameObject Player)
     {
         playerScr = Player.GetComponent<PlayerControllerScript>();
-        
+        //Opens shop ui
         ShopUI.SetActive(true); 
         playerScr.SetCanMove(false);
 
-        this.player = Player;
+        //Auto Setup for the shop item informations
+        if(ShopItemList.Count <= 0){
+            foreach(ShopItemScript childScr in ShopItemListBox.transform.GetComponentsInChildren<ShopItemScript>()){                
+                ShopItemList.Add(childScr);
+            }
+
+        }
+        //sets each shop item to reference player for gun equipping
+        foreach(ShopItemScript item in ShopItemList){
+            item.SetPlayerInteracted(playerScr);
+        }
     }
 
     public void CloseShop(){                
         playerScr.SetCanMove(true);
-        player = null;
         playerScr = null;
         ShopUI.SetActive(false);
+        foreach(ShopItemScript item in ShopItemList){
+            item.ClearInteractedPlayerInfo();
+        }
     }
 
 }

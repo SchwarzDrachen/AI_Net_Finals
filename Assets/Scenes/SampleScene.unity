@@ -2254,7 +2254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InteractableID: Shop
   ShopUI: {fileID: 2055022551}
-  ShopItemList: 0
+  ShopItemListBox: {fileID: 2017131042}
 --- !u!1 &1648557904
 GameObject:
   m_ObjectHideFlags: 0
@@ -2334,7 +2334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c0f0b195c9ab242bf23b826a7b925f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GunObject: {fileID: 2329932407359735617, guid: a616b11637c36de40bae6634215de7c1, type: 3}
+  GunObject: {fileID: 2329932407359735617, guid: 587ac1bac3a95bb4f95dcf55a9d925ad, type: 3}
   GunInfoNameTXT: {fileID: 1967920175}
   GunStatsTXT: {fileID: 917018812}
   GunNameListItemTXT: {fileID: 178638470}
@@ -2972,7 +2972,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1969691474}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1648557907}
+        m_TargetAssemblyTypeName: ShopItemScript, Assembly-CSharp
+        m_MethodName: BuyGun
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1969691474
 MonoBehaviour:
   m_ObjectHideFlags: 0

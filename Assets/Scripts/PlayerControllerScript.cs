@@ -69,9 +69,13 @@ public class PlayerControllerScript : MonoBehaviour
 
     public void EquipGun(GameObject gun){
         //removes current gun to be ready for requipping new gun
-        Destroy(gunHolder.transform.GetChild(0));
+        Destroy(gunHolder.transform.GetChild(0).gameObject);
 
-        gun.transform.parent = gunHolder.transform;
+        GameObject newGun = Instantiate(gun);
+        newGun.transform.SetParent(gunHolder.transform);
+        newGun.transform.localPosition = new Vector2(0,0);
+
+        currentGun = newGun;
     }
 
     private void Interact(){        

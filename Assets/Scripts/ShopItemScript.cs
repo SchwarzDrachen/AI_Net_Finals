@@ -15,12 +15,14 @@ public class ShopItemScript : MonoBehaviour
     [SerializeField]private TextMeshProUGUI GunCostListItemTXT;
     [SerializeField]private int GunCost;
     private GenericGunScript GunInfo;
+    private PlayerControllerScript interactedPlayer;
 
     void Awake(){
         GunInfo = GunObject.GetComponent<GenericGunScript>();
     }
 
     public void BuyGun(){
+        interactedPlayer.EquipGun(GunObject);
 
     }
     public void ShowGunItemInfo(){
@@ -29,8 +31,14 @@ public class ShopItemScript : MonoBehaviour
 
     }
 
-    public void SetPlayerInteracted(){
+    public void SetPlayerInteracted(PlayerControllerScript player){
+        if(interactedPlayer == null){
+            interactedPlayer = player;
+        }
+    }
 
+    public void ClearInteractedPlayerInfo(){
+        interactedPlayer = null;
     }
 
 }
