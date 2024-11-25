@@ -6,9 +6,9 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] 
-    private float minSpawnInterval = 2.0f;
+    private float minSpawnInterval;
     [SerializeField] 
-    private float maxSpawnInterval = 2.50f;
+    private float maxSpawnInterval;
     [SerializeField] 
     private GameObject MELEE_ENEMY_PREFAB;
     [SerializeField] 
@@ -23,12 +23,16 @@ public class EnemySpawner : MonoBehaviour
     }
     void Update()
     {
+        if(spawner != null){
+            return;
+        }
         spawner = StartCoroutine(SpawnCoroutine());
     }
 
     private IEnumerator SpawnCoroutine(){
         spawnInterval = Random.Range(minSpawnInterval, maxSpawnInterval);
         yield return new WaitForSeconds(spawnInterval);
+        Debug.Log("SPAWN"); 
         SpawnEnemy();
         spawner = null;
     }

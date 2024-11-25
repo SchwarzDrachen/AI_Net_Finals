@@ -671,7 +671,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 15.343808
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -696,7 +696,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -2.8, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1683,8 +1683,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ee5e492dce418d468de422f296c6ffc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minSpawnInterval: 0.5
-  maxSpawnInterval: 2.5
+  minSpawnInterval: 3
+  maxSpawnInterval: 3
   MELEE_ENEMY_PREFAB: {fileID: 7192267270702287472, guid: a13829b533e90b649b44f6f5c102cf59, type: 3}
   RANGE_ENEMY_PREFAB: {fileID: 5016838627031133418, guid: 9166898911ba1b246b945e17f9332ce5, type: 3}
 --- !u!1660057539 &9223372036854775807
