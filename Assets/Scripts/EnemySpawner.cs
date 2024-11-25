@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -7,12 +6,13 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] 
-    private float minSpawnInterval = 0.50f;
+    private float minSpawnInterval = 2.0f;
     [SerializeField] 
     private float maxSpawnInterval = 2.50f;
-
-    private const string MELEE_ENEMY_PREFAB = "Melee";
-    private const string RANGE_ENEMY_PREFAB = "Range";
+    [SerializeField] 
+    private GameObject MELEE_ENEMY_PREFAB;
+    [SerializeField] 
+    private GameObject RANGE_ENEMY_PREFAB;
     private float spawnInterval;
     private Boundary boundary;
     private Coroutine spawner;
@@ -35,6 +35,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy(){
         Instantiate(MELEE_ENEMY_PREFAB, GetSpawnPosition(),Quaternion.identity);
+        Instantiate(RANGE_ENEMY_PREFAB, GetSpawnPosition(),Quaternion.identity);
     }
 
     private Vector2 GetSpawnPosition(){

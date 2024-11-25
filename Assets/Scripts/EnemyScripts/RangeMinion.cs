@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class RangeMinion : MonoBehaviour
 {
     [SerializeField]
-    private Transform targetMarker; 
+    private GameObject targetMarker; 
     [SerializeField]
     private float fireRateCountdown;
     [SerializeField]
@@ -24,6 +24,7 @@ public class RangeMinion : MonoBehaviour
         agentBody = GetComponent<Rigidbody2D>();
         agent.updateRotation = false;
 		agent.updateUpAxis = false;
+        targetMarker = GameObject.FindGameObjectWithTag("Player");
     }
 
     private void Update()
@@ -32,11 +33,11 @@ public class RangeMinion : MonoBehaviour
             fireRateCountdown -= Time.deltaTime;
         }
 
-        if(targetMarker.position == null){
+        if(targetMarker.transform.position == null){
             Debug.Log("NO TARGET");
         }
         else{
-            agent.SetDestination(targetMarker.position);
+            agent.SetDestination(targetMarker.transform.position);
             FlipSpriteOnDirection();
             AimGun();
             //Debug.Log(agent.velocity);
@@ -59,7 +60,7 @@ public class RangeMinion : MonoBehaviour
     }
 
     private void AimGun(){
-        Vector3 targetPos = new Vector3(targetMarker.position.x, targetMarker.position.y,0f);
+        Vector3 targetPos = new Vector3(targetMarker.transform.position.x, targetMarker.transform.position.y,0f);
         Vector3 agentPos = new Vector3(agentObject.transform.position.x,agentObject.transform.position.y,0f);
         Vector3 gunAimPos = targetPos - agentPos;
         float aimAngle = Mathf.Atan2(gunAimPos.y, gunAimPos.x) * Mathf.Rad2Deg;        
