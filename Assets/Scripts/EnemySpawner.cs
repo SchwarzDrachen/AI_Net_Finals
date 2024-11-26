@@ -13,14 +13,11 @@ public class EnemySpawner : MonoBehaviour
     private GameObject MELEE_ENEMY_PREFAB;
     [SerializeField] 
     private GameObject RANGE_ENEMY_PREFAB;
+    [SerializeField]
+    private GameObject[] waypoints;
     private float spawnInterval;
-    private Boundary boundary;
     private Coroutine spawner;
 
-    private void Start(){
-        boundary = new();
-        boundary.CalculateScreenRestrictions();
-    }
     void Update()
     {
         if(spawner != null){
@@ -32,7 +29,6 @@ public class EnemySpawner : MonoBehaviour
     private IEnumerator SpawnCoroutine(){
         spawnInterval = Random.Range(minSpawnInterval, maxSpawnInterval);
         yield return new WaitForSeconds(spawnInterval);
-        Debug.Log("SPAWN"); 
         SpawnEnemy();
         spawner = null;
     }
@@ -42,25 +38,8 @@ public class EnemySpawner : MonoBehaviour
         Instantiate(RANGE_ENEMY_PREFAB, GetSpawnPosition(),Quaternion.identity);
     }
 
-    private Vector2 GetSpawnPosition(){
-        // Generate a random position along an axis
-        float xRandomPosition = Random.Range(-boundary.Bounds.x, boundary.Bounds.x);
-        float yRandomPosition = Random.Range(-boundary.Bounds.y, boundary.Bounds.y);
-        int areaToSpawn = Random.Range(0, 4);
-        switch(areaToSpawn){
-            // Upper part
-            case 0:
-                return new Vector2(xRandomPosition, boundary.Bounds.y);
-            //Right part
-            case 1:
-                return new Vector2(boundary.Bounds.x, yRandomPosition);
-            // Bottom part
-            case 2:
-                return new Vector2(xRandomPosition, -boundary.Bounds.y);
-            //Left part
-            case 3:
-                return new Vector2(-boundary.Bounds.x, yRandomPosition);
-        }
-        return Vector2.zero;
+    private Vector3 GetSpawnPosition(){
+        int i = Random.Range(0,3);
+        return waypoints[i].transform.position;
     }
 }
