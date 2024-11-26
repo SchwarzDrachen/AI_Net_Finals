@@ -2670,8 +2670,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1778183294}
-  - component: {fileID: 1778183295}
   - component: {fileID: 1778183296}
+  - component: {fileID: 1778183297}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2696,26 +2696,6 @@ Transform:
   - {fileID: 2047562053}
   m_Father: {fileID: 1368897630}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1778183295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1778183293}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db8429f933b2e0a41a20230986edf3d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxMovementSpeed: 5
-  canMove: 1
-  gunHolder: {fileID: 2047562052}
-  playerSprite: {fileID: 149637208}
-  currentGun: {fileID: 1226936604}
-  interactDistance: 2
-  healthScr: {fileID: 0}
-  InteractionDisplay: {fileID: 171757150}
 --- !u!50 &1778183296
 Rigidbody2D:
   serializedVersion: 4
@@ -2743,6 +2723,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &1778183297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1778183293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db8429f933b2e0a41a20230986edf3d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxMovementSpeed: 0
+  canMove: 1
+  gunHolder: {fileID: 2047562052}
+  playerSprite: {fileID: 149637208}
+  currentGun: {fileID: 1226936604}
+  interactDistance: 0
+  InteractionDisplay: {fileID: 171757150}
 --- !u!1 &1833067636
 GameObject:
   m_ObjectHideFlags: 0

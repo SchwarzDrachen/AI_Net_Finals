@@ -3,18 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PlayerControllerScript : MonoBehaviour
 {
-    [SerializeField]private float maxMovementSpeed;
-    [SerializeField]private bool canMove = true;    
-    [SerializeField]private GameObject gunHolder;
-    [SerializeField]private GameObject playerSprite;
-    [SerializeField]private GameObject currentGun;
-    [SerializeField]private float interactDistance;  
-    [SerializeField] private HealthScript healthScr;
+    [SerializeField] private float maxMovementSpeed;
+    [SerializeField] private bool canMove = true;    
+    [SerializeField] private GameObject gunHolder;
+    [SerializeField] private GameObject playerSprite;
+    [SerializeField] private GameObject currentGun;
+    [SerializeField] private float interactDistance;
+    // Commented out due to errors, missing references
+    // All related code commented out as well
+    // [SerializeField] private HealthScript healthScr;
 
     [SerializeField]private GameObject InteractionDisplay;
 
@@ -23,9 +24,9 @@ public class PlayerControllerScript : MonoBehaviour
     RaycastHit2D raycast;
     Vector2 mouseWorldPos;
     private void Update(){
-        if(healthScr.isAlive() == false){
+        /*if(healthScr.isAlive() == false){
             DoPlayerDeath();
-        }
+        }*/
         if(canMove){
             MovementScript();
             FlipSpriteOnDirection();
@@ -126,7 +127,7 @@ public class PlayerControllerScript : MonoBehaviour
 
      private void OnCollisionEnter2D(Collision2D collider){
         if(collider.gameObject.CompareTag("Enemy")){
-            healthScr.takeDamage(50);
+            // healthScr.takeDamage(50);
             Debug.Log("function requires more polishing");
         }
     }
