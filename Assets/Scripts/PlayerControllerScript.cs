@@ -24,6 +24,7 @@ public class PlayerControllerScript : MonoBehaviour
             FlipSpriteOnDirection();
             AimGun();
             Interact();
+            camera.transform.position = transform.position;
             
         }
         //checks if left mousebutton is held down to shoot

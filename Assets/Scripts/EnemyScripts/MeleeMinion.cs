@@ -8,6 +8,10 @@ public class MeleeMinion : MonoBehaviour
     private GameObject targetMarker; 
     [SerializeField]
     private GameObject agentObject;
+    [SerializeField]
+    private float maxHealth;
+    [SerializeField]
+    private float curHealth;
     private NavMeshAgent agent;
     private SpriteRenderer agentSprite;
     private Rigidbody2D agentBody;
@@ -16,6 +20,7 @@ public class MeleeMinion : MonoBehaviour
         agent.updateRotation = false;
 		agent.updateUpAxis = false;
         targetMarker = GameObject.FindGameObjectWithTag("Player");
+        curHealth = maxHealth;
     }
 
     private void Update()
@@ -36,6 +41,12 @@ public class MeleeMinion : MonoBehaviour
         }
         else{
             agentObject.transform.localScale = new Vector2(1,1);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision collider){
+        if(collider.tag == "bullet"){
+            curHealth -= 50;
         }
     }
 }

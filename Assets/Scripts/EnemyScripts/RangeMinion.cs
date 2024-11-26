@@ -15,6 +15,10 @@ public class RangeMinion : MonoBehaviour
     private GameObject gunObjectPos;
     [SerializeField]
     private GameObject gun;
+    [SerializeField]
+    private float maxHealth;
+    [SerializeField]
+    private float curHealth;
     private NavMeshAgent agent;
     private SpriteRenderer agentSprite;
     private Rigidbody2D agentBody;
@@ -25,6 +29,7 @@ public class RangeMinion : MonoBehaviour
         agent.updateRotation = false;
 		agent.updateUpAxis = false;
         targetMarker = GameObject.FindGameObjectWithTag("Player");
+        curHealth = maxHealth;
     }
 
     private void Update()
@@ -65,5 +70,11 @@ public class RangeMinion : MonoBehaviour
         Vector3 gunAimPos = targetPos - agentPos;
         float aimAngle = Mathf.Atan2(gunAimPos.y, gunAimPos.x) * Mathf.Rad2Deg;        
         gunObjectPos.transform.rotation = Quaternion.AngleAxis(aimAngle,Vector3.forward);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collider){
+        if(collider.tag == "bullet"){
+            curHealth -= 50;
+        }
     }
 }
