@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TestBullet : GenericBulletScript
@@ -25,5 +26,16 @@ public class TestBullet : GenericBulletScript
 
     private void Update(){
         moveBullet();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collider){
+        if(collider.gameObject.tag == "Enemy"){ //NOT WORKING
+            collider.gameObject.GetComponent<HealthScript>().takeDamage(50);
+        }
+
+        if(collider.gameObject.name != "Player"){
+            Destroy(this.gameObject);
+        }
+        
     }
 }

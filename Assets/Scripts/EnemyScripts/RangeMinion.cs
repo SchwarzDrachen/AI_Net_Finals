@@ -16,9 +16,7 @@ public class RangeMinion : MonoBehaviour
     [SerializeField]
     private GameObject gun;
     [SerializeField]
-    private float maxHealth;
-    [SerializeField]
-    private float curHealth;
+    private HealthScript health;
     private NavMeshAgent agent;
     private SpriteRenderer agentSprite;
     private Rigidbody2D agentBody;
@@ -29,11 +27,14 @@ public class RangeMinion : MonoBehaviour
         agent.updateRotation = false;
 		agent.updateUpAxis = false;
         targetMarker = GameObject.FindGameObjectWithTag("Player");
-        curHealth = maxHealth;
     }
 
     private void Update()
     {
+        if(!health.isAlive()){
+            Destroy(this.gameObject);
+            return;
+        }
         if(fireRateCountdown > 0){
             fireRateCountdown -= Time.deltaTime;
         }
@@ -45,7 +46,6 @@ public class RangeMinion : MonoBehaviour
             agent.SetDestination(targetMarker.transform.position);
             FlipSpriteOnDirection();
             AimGun();
-            //Debug.Log(agent.velocity);
             if(agent.velocity.magnitude <= 0.0f && fireRateCountdown <= 0){
             fireRateCountdown = 5;
             gun.GetComponent<GenericGunScript>().Shoot();
@@ -72,9 +72,9 @@ public class RangeMinion : MonoBehaviour
         gunObjectPos.transform.rotation = Quaternion.AngleAxis(aimAngle,Vector3.forward);
     }
 
-    private void OnCollisionEnter2D(Collision2D collider){
-        if(collider.tag == "bullet"){
-            curHealth -= 50;
+    private void OnCollisionEnter2D(Collision2D col){
+        if(col.gameObject.tag == "Wall"){
+            Physics2D.IgnoreCollision(col.collider,GetComponent<Collider2D>());
         }
     }
 }

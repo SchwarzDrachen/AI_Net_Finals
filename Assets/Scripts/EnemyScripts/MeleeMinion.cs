@@ -9,22 +9,30 @@ public class MeleeMinion : MonoBehaviour
     [SerializeField]
     private GameObject agentObject;
     [SerializeField]
-    private float maxHealth;
-    [SerializeField]
-    private float curHealth;
+    private HealthScript health;
     private NavMeshAgent agent;
-    private SpriteRenderer agentSprite;
+    
     private Rigidbody2D agentBody;
     private void Awake(){
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
 		agent.updateUpAxis = false;
         targetMarker = GameObject.FindGameObjectWithTag("Player");
-        curHealth = maxHealth;
+        
     }
 
     private void Update()
     {
+        if(!health.isAlive()){
+            Debug.Log("DEATH");
+            Destroy(this.gameObject);
+            return;
+        }
+
+        if(agentObject.transform.position.z != 0){
+           agentObject.transform.position = new Vector3(agentObject.transform.position.x,agentObject.transform.position.y,0); 
+        }
+
         if(targetMarker.transform.position == null){
             Debug.Log("NO TARGET!");
         }
@@ -32,21 +40,20 @@ public class MeleeMinion : MonoBehaviour
             FlipSpriteOnDirection();
             agent.SetDestination(targetMarker.transform.position);
         }
-        
     }
 
     private void FlipSpriteOnDirection(){
         if(agentObject.transform.position.x > targetMarker.transform.position.x){
-            agentObject.transform.localScale = new Vector2(-1,1);
+            agentObject.transform.localScale = new Vector3(-1,1,0);
         }
         else{
-            agentObject.transform.localScale = new Vector2(1,1);
+            agentObject.transform.localScale = new Vector3(1,1,0);
         }
     }
 
-    private void OnCollisionEnter2D(Collision collider){
-        if(collider.tag == "bullet"){
-            curHealth -= 50;
+    private void OnCollisionEnter2D(Collision2D col){
+        if(col.gameObject.tag == "Wall"){
+            Physics2D.IgnoreCollision(col.collider,GetComponent<Collider2D>());
         }
     }
 }
