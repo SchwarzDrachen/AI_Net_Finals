@@ -1202,10 +1202,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cd9a1c3858bff842bfd9ddc4edd2f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player:
-  - {fileID: 1433640817}
+  player: {fileID: 1433640817}
   gunObjectPos: {fileID: 1541272713}
   gun: {fileID: 1172668442}
+  fireRateCooldown: 3
+  fireRateBreak: 15
 --- !u!195 &545668062
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2922,7 +2923,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2132261303
 Transform:
   m_ObjectHideFlags: 0
