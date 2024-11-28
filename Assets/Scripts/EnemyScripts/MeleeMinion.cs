@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class MeleeMinion : MonoBehaviour
 {
-    private GameObject targetMarker; 
+    [SerializeField]private GameObject targetMarker; 
     [SerializeField]
     private GameObject agentObject;
     [SerializeField]
@@ -17,6 +17,7 @@ public class MeleeMinion : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
 		agent.updateUpAxis = false;
+        //must polish function
         targetMarker = GameObject.FindGameObjectWithTag("Player");
         
     }
@@ -29,7 +30,7 @@ public class MeleeMinion : MonoBehaviour
             return;
         }
 
-        if(agentObject.transform.position.z != 0){
+        if(agentObject.transform.position.z != 0){            
            agentObject.transform.position = new Vector3(agentObject.transform.position.x,agentObject.transform.position.y,0); 
         }
 

@@ -15,7 +15,7 @@ public class TestBullet : GenericBulletScript
     protected override void moveBullet()
     {
         if (this.lifetime > 0){            
-            rb.velocity = transform.right * bulletSpeed;
+            gameObject.transform.position += transform.right * (bulletSpeed/10);
 
             this.lifetime -= Time.deltaTime;
         }
