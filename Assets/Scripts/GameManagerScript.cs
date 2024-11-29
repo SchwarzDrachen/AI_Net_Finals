@@ -39,7 +39,7 @@ public class GameManagerScript : SingletonPUN<GameManagerScript>
    }
    private void SpawnEnemy(){
      
-     if(SpawnerCountdown <= 0 && enemiesLeftToKill > 0){
+     if(SpawnerCountdown <= 0 && enemiesLeftToSpawn > 0){
           int r = Random.Range(0, Spawners.Length-1);
           Vector3 SpawnPos = Spawners[r].transform.position;
           GameObject testenemy = PhotonNetwork.Instantiate(Enemy, SpawnPos, Quaternion.identity);
@@ -53,20 +53,29 @@ public class GameManagerScript : SingletonPUN<GameManagerScript>
    private void UpdateEnemyCount(){
     EnemyCountDisplayTXT.text = $"Enemies Left: {enemiesLeftToKill}";
    }
+   public void ModifyEnemyCount(int value){
+     photonView.RPC("ModifyEnemyCountRPC", RpcTarget.AllBuffered,value);
+   }
+   [PunRPC]
+   private void ModifyEnemyCountRPC(int value){
+     enemiesLeftToKill += value;
+   }
    private void UpdateWaveCount(){
     WavesDisplayTXT.text = $"Wave: {CurrentWave}";
    }
    private void CheckIfWaveClear(){
     if(enemiesLeftToKill <= 0){
         Debug.Log("Wave Clear");
+          if(CurrentWave >= MaxWaves){
+               ShowWinPanel();
+          }
+          else{
+               CurrentWave++;
+               enemiesLeftToSpawn = BaseEnemyWaveCount * CurrentWave;
+               enemiesLeftToKill = enemiesLeftToSpawn;
+          }
     }
-    if(CurrentWave >= MaxWaves){
-     ShowWinPanel();
-    }
-    else{
-     CurrentWave++;
-     enemiesLeftToSpawn = BaseEnemyWaveCount * CurrentWave;
-    }
+    
    }
    public void ShowWinPanel(){
      photonView.RPC("ShowWinPanelRPC", RpcTarget.AllBuffered);
@@ -79,6 +88,7 @@ public class GameManagerScript : SingletonPUN<GameManagerScript>
    void Update(){
      UpdateLocalScoreDisplay();
      UpdateEnemyCount();
+     UpdateWaveCount();
      if (!PhotonNetwork.IsMasterClient) return;
      SpawnEnemy();     
      CheckIfWaveClear();

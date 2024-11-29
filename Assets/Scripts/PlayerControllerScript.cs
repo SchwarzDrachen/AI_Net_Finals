@@ -115,7 +115,7 @@ public class PlayerControllerScript : MonoBehaviourPunCallbacks
         GameObject newGun = PhotonNetwork.Instantiate(gun,gunHolder.transform.position, Quaternion.Euler(0,0,0));
         Debug.Log("equipping new gun");
         newGun.GetComponent<GenericGunScript>().GunParent = gunHolder;
-        newGun.GetComponent<GenericGunScript>().GunOwner = photonView.Owner;
+        newGun.GetComponent<GenericGunScript>().GunOwner = Owner;
         currentGun = newGun;                                   
     }
 
@@ -165,6 +165,7 @@ public class PlayerControllerScript : MonoBehaviourPunCallbacks
     private void OnCollisionEnter2D(Collision2D collider){
         if(collider.gameObject.CompareTag("Enemy")){
             healthScr.takeDamage(collider.gameObject.GetComponent<MeleeMinion>().GetDamage());
+            healthScr.UpdateHealthBar();
         }
     }
     private void CameraFollowPlayer(){

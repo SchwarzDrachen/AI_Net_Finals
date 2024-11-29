@@ -38,8 +38,8 @@ public class MeleeMinion : MonoBehaviourPunCallbacks
     {
         if(!health.isAlive()){
             GiveScoreToLastHit();
-            GameManagerScript.Instance.enemiesLeftToKill--;
             DestroyOverNetwork();
+            GameManagerScript.Instance.ModifyEnemyCount(-1);            
             return;
         }
         if(playerList.transform.childCount > 0){

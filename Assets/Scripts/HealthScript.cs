@@ -49,7 +49,6 @@ public class HealthScript : MonoBehaviour
             currentHealth -= damageValue;
         }
         math.clamp(currentHealth,0,maxHealth);
-        UpdateHealthBar();
     }
     public void healHealth(float healValue){
         if(currentHealth < maxHealth){
