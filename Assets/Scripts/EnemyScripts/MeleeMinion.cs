@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
+using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
+using Photon.Pun.Demo.PunBasics;
 
-public class MeleeMinion : MonoBehaviour
+public class MeleeMinion : MonoBehaviourPunCallbacks
 {
     [SerializeField]private GameObject targetMarker; 
     
@@ -11,36 +15,39 @@ public class MeleeMinion : MonoBehaviour
     
     [SerializeField]private HealthScript health;
     [SerializeField]private GameObject playerList;
+    [SerializeField]private float attackDamage;
     private NavMeshAgent agent;
     
     private Rigidbody2D agentBody;
+    private Player LastPlayerHit;
+    private bool isDestroyed = false;
     private void Awake(){
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
 		agent.updateUpAxis = false;
+
+        
+    }
+    public override void OnEnable(){
+        isDestroyed = false;
         health.ResetHealth();
         //must polish function
-        
     }
 
     private void Update()
     {
         if(!health.isAlive()){
-            Debug.Log("DEATH");
-            Destroy(this.gameObject);
+            GiveScoreToLastHit();
+            GameManagerScript.Instance.enemiesLeftToKill--;
+            DestroyOverNetwork();
             return;
         }
         if(playerList.transform.childCount > 0){
             GetNearestPlayer();
         }
-        
-
-        if(agentObject.transform.position.z != 0){            
-           agentObject.transform.position = new Vector3(agentObject.transform.position.x,agentObject.transform.position.y,0); 
-        }
 
         if(targetMarker == null){
-            Debug.Log("NO TARGET!");
+            //Debug.Log("NO TARGET!");
         }
         else{
             FlipSpriteOnDirection();
@@ -57,30 +64,59 @@ public class MeleeMinion : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D col){
-        if(col.gameObject.tag == "Wall"){
-            Physics2D.IgnoreCollision(col.collider,GetComponent<Collider2D>());
-        }
-    }
-
     private void GetNearestPlayer(){
         GameObject nearest = null;
-        foreach(Transform player in playerList.transform){
+        foreach(Transform player in playerList.transform){            
+            if(player.gameObject.activeSelf == false){
+                continue;
+            }
             if(nearest == null){
-                nearest = player.gameObject;
-                return;
+                nearest = player.gameObject; 
+                continue;
             }
             float nearestcompdist = Vector2.Distance(transform.position, nearest.transform.position);
-            float currentcompdist = Vector2.Distance(transform.position, player.transform.position);
-            if(currentcompdist< nearestcompdist){
+            float currentcompdist = Vector2.Distance(transform.position, player.transform.position);            
+            if(currentcompdist < nearestcompdist){
                 nearest = player.gameObject;
             }
         }
-        targetMarker = nearest;
+        targetMarker = nearest;        
 
     }
     public void SetPlayerList(GameObject value){
         playerList = value;
 
+    }
+
+    public void TakeDamage(float damage){        
+        health.takeDamage(damage);        
+    }
+    public void SetLastPlayerHit(Player playerVal){
+        LastPlayerHit = playerVal;
+    }
+
+    public float GetDamage(){
+        return attackDamage;
+    }
+    public virtual void DestroyOverNetwork(){
+        photonView.RPC("RPCDestroyOverNetwork", RpcTarget.AllBuffered);
+    }
+    [PunRPC]
+    protected virtual void RPCDestroyOverNetwork()
+    {
+        // Only the player that spawned the object can destroy it
+        // Because the bullet is spawned by the player
+        if (photonView.IsMine)
+        {
+            PhotonNetwork.Destroy(this.gameObject);
+        }
+        else
+        {
+            isDestroyed = true;
+        }
+    }
+
+    public void GiveScoreToLastHit(){
+        GameManagerScript.Instance.AddScore(100,LastPlayerHit);
     }
 }

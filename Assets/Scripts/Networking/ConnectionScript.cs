@@ -54,10 +54,17 @@ public class ConnectionScript : MonoBehaviourPunCallbacks
         RoomPanel.SetActive(true);
     }
 
-    //button functions
     public void StartGame(){
+        if(PhotonNetwork.IsMasterClient){
+            photonView.RPC("StartGameRPC", RpcTarget.AllBuffered);
+        }
+        
+    }
+    //button functions
+    [PunRPC]
+    public void StartGameRPC(){
         LoadingTXT.SetActive(true);
-        PhotonNetwork.LoadLevel(2);
+        PhotonNetwork.LoadLevel(LevelIDToLoad);
         //loads world
     }
     public void LeaveRoom(){        
@@ -81,6 +88,10 @@ public class ConnectionScript : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom(){ 
         LoadingTXT.SetActive(false);     
         GoToJoinedRoomPanel();
+        UpdateRoomInfoDisplay();
+        
+    }
+    private void UpdateRoomInfoDisplay(){
         Debug.Log("Joined a Room");
         //checks if there are items to hide then hides list items to be reused again
         if(PlayerContentList.transform.childCount > 0){
@@ -102,7 +113,13 @@ public class ConnectionScript : MonoBehaviourPunCallbacks
             GameObject PlayerItemListObj = PlayerContentList.transform.GetChild(PlayerListID).gameObject;  
             //Gets RoomList Item in the content box list                      
             TextMeshProUGUI PlayerItemTXT = PlayerContentList.transform.GetChild(PlayerListID).GetChild(0).GetComponent<TextMeshProUGUI>();
-            PlayerItemTXT.text = player.NickName;
+            if(player.IsMasterClient){
+                PlayerItemTXT.text = $"Host: {player.NickName}";
+            }
+            else{
+                PlayerItemTXT.text = player.NickName;
+            }
+            
             PlayerItemListObj.SetActive(true);
             PlayerListID++; 
             Debug.Log(PlayerListID);
@@ -115,6 +132,10 @@ public class ConnectionScript : MonoBehaviourPunCallbacks
         Debug.Log("We are connected To Master");
         PhotonNetwork.JoinRandomRoom();
         LoadingTXT.SetActive(true);
+    }
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        UpdateRoomInfoDisplay();
     }
 
 

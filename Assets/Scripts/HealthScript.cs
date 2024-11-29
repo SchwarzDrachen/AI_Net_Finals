@@ -49,8 +49,7 @@ public class HealthScript : MonoBehaviour
             currentHealth -= damageValue;
         }
         math.clamp(currentHealth,0,maxHealth);
-        //UpdateHealthBar();
-
+        UpdateHealthBar();
     }
     public void healHealth(float healValue){
         if(currentHealth < maxHealth){
@@ -63,7 +62,7 @@ public class HealthScript : MonoBehaviour
     //     photonView.RPC("RPCUpdateHealthBar", RpcTarget.AllBuffered);
     // }
     // [PunRPC]
-    private void UpdateHealthBar(){                  
+    public void UpdateHealthBar(){                  
         float HealthPercent = ((float)currentHealth / (float)maxHealth);       
         HealthBar.GetComponent<UnityEngine.UI.Image>().fillAmount = HealthPercent;
         if(HealthValueLabel != null){

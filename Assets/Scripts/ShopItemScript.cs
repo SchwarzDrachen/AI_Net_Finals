@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 
-public class ShopItemScript : MonoBehaviour
+public class ShopItemScript : MonoBehaviourPunCallbacks
 {
     [SerializeField]private GameObject GunObject;
     //Gun Info display
@@ -16,7 +18,7 @@ public class ShopItemScript : MonoBehaviour
     [SerializeField]private int GunCost;
     [SerializeField]private GameObject GunInfoPanel;
     private GenericGunScript GunInfo;
-    private PlayerControllerScript interactedPlayer;
+    [SerializeField]private PlayerControllerScript interactedPlayer;
 
     void Awake(){
         GunInfo = GunObject.GetComponent<GenericGunScript>();
@@ -24,7 +26,11 @@ public class ShopItemScript : MonoBehaviour
     }
 
     public void BuyGun(){
-        interactedPlayer.EquipGun(GunObject);
+        if(interactedPlayer.GetOwner().GetScore() > GunCost){
+            interactedPlayer.EquipGun(GunInfo.Get_GunName());
+            interactedPlayer.GetOwner().AddScore(-GunCost);
+        }
+        
 
     }
     public void ShowGunItemInfo(){

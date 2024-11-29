@@ -18,4 +18,8 @@ public class TestGun : GenericGunScript
         
                
     }
+    public override void AttachToParent()
+    {
+        throw new System.NotImplementedException();
+    }
 }

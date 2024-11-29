@@ -8,5 +8,7 @@ public class GameObjectReferences : MonoBehaviour
     public GameObject InteractionDisplayOBJ;
     public GameObject HealthBar;
     public TextMeshProUGUI HealthBarTxt;
+    public GameObject WeaponPoolList;
+    public GameObject GameOverPanel;
     
 }

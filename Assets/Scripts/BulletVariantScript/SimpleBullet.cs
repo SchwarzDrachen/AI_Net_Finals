@@ -2,22 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Photon.Pun.UtilityScripts;
+using Photon.Pun;
 
 public class SimpleBullet : GenericBulletScript
 {
-    private void Awake(){
-        //initialize values
-        this.bulletLifetime = 1;
+    private bool isDestroyed = false;
+    public override void OnEnable(){
+        currentBulletLifetime = bulletLifetime;
+        isDestroyed = false;
+    }
+    public override void OnDisable(){
+        owner = null;
     }
     protected override void moveBullet()
     {
-        if (this.bulletLifetime > 0){            
+        if (this.currentBulletLifetime > 0){            
             gameObject.transform.position += transform.right * (bulletSpeed/10);
 
-            this.bulletLifetime -= Time.deltaTime;
+            this.currentBulletLifetime -= Time.deltaTime;
         }
         else{
-            Destroy(gameObject);
+            DestroyOverNetwork();
         }
     }
 
@@ -27,8 +33,29 @@ public class SimpleBullet : GenericBulletScript
 
     private void OnCollisionEnter2D(Collision2D collider){
         if(collider.gameObject.CompareTag("Enemy")){
-            collider.gameObject.GetComponent<HealthScript>().takeDamage((int)bulletDamage);
+            MeleeMinion enemyScr = collider.gameObject.GetComponent<MeleeMinion>();
+            enemyScr.TakeDamage(bulletDamage);
+            enemyScr.SetLastPlayerHit(owner);
+
         }
-        Destroy(this.gameObject);
+        DestroyOverNetwork();
+    }
+
+    public void DestroyOverNetwork(){
+        photonView.RPC("RPCDestroyOverNetwork", RpcTarget.AllBuffered);
+    }
+    [PunRPC]
+    private void RPCDestroyOverNetwork()
+    {
+        // Only the player that spawned the object can destroy it
+        // Because the bullet is spawned by the player
+        if (photonView.IsMine)
+        {
+            PhotonNetwork.Destroy(this.gameObject);
+        }
+        else
+        {
+            isDestroyed = true;
+        }
     }
 }

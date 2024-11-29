@@ -3,21 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Pun.UtilityScripts;
+using Photon.Realtime;
 
-public class PlayerControllerScript : MonoBehaviour
+public class PlayerControllerScript : MonoBehaviourPunCallbacks
 {
     [SerializeField]private float maxMovementSpeed;
-    [SerializeField]private bool canMove = true;    
+    [SerializeField]private bool canMove = false;    
     [SerializeField]private GameObject gunHolder;
     [SerializeField]private GameObject playerSprite;
     [SerializeField]private GameObject currentGun;
     [SerializeField]private float interactDistance;  
     [SerializeField]private HealthScript healthScr;    
     [SerializeField]private GameObject InteractionDisplay;
+    [SerializeField]private GameObject GameOverPanel;    
     //for ease in use referencing UI elements
     [SerializeField]private GameObjectReferences GORScript;
+    [SerializeField]private GameObject WeaponsPool;
+    private bool isDestroyed = false;
+    private Player Owner;
 
     private Vector3 currentSpeed;
     private float timeCounter;
@@ -27,6 +33,7 @@ public class PlayerControllerScript : MonoBehaviour
         if(healthScr.isAlive() == false){
             DoPlayerDeath();
         }
+        if (!photonView.IsMine) return;
         if(canMove){
             MovementScript();
             CameraFollowPlayer();
@@ -40,13 +47,24 @@ public class PlayerControllerScript : MonoBehaviour
             }                
         }
         
+    }    
+    public Player GetOwner(){
+        return Owner;
     }
-    private void Awake(){
-        InteractionDisplay.SetActive(false);
-        healthScr.ResetHealth();
+    void Start(){
+        healthScr.ResetHealth(); 
     }
-    private void OnEnable(){
+    public override void OnEnable(){
+        if (!photonView.IsMine) return;
+        healthScr.ResetHealth(); 
+        if(InteractionDisplay != null){
+            InteractionDisplay.SetActive(false);
+        }
+        Owner = photonView.Owner;
+             
         Debug.Log("initializing Player Values"); 
+        EquipGun("Pistol");        
+        if (!photonView.IsMine) return;
         if(GORScript != null){
             ReloadObjectReferences();
         }
@@ -80,16 +98,25 @@ public class PlayerControllerScript : MonoBehaviour
 
     }
 
-    public void EquipGun(GameObject gun){
+    public void EquipGun(string gun){    
+        photonView.RPC("RPCEquipGun", RpcTarget.AllBuffered,gun);       
+    }
+    [PunRPC]
+    private void RPCEquipGun(string gun){  
+        if(!photonView.IsMine)return;
         //removes current gun to be ready for requipping new gun
-        Destroy(gunHolder.transform.GetChild(0).gameObject);
-
-        GameObject newGun = Instantiate(gun);
-        newGun.transform.SetParent(gunHolder.transform);
-        newGun.transform.localPosition = new Vector2(0,0);
-        newGun.transform.localRotation = Quaternion.Euler(0,0,0);
-
-        currentGun = newGun;
+        if(currentGun!=null){
+            GenericGunScript cg = currentGun.GetComponent<GenericGunScript>();
+            cg.GunParent = null;
+            cg.DestroyOverNetwork();
+            currentGun = null;
+        }
+        
+        GameObject newGun = PhotonNetwork.Instantiate(gun,gunHolder.transform.position, Quaternion.Euler(0,0,0));
+        Debug.Log("equipping new gun");
+        newGun.GetComponent<GenericGunScript>().GunParent = gunHolder;
+        newGun.GetComponent<GenericGunScript>().GunOwner = photonView.Owner;
+        currentGun = newGun;                                   
     }
 
     private void Interact(){        
@@ -116,14 +143,12 @@ public class PlayerControllerScript : MonoBehaviour
     }
 
     private void ShowInteractableName(Vector2 objectPos, GenericInteractableScript objScript){             
-        string interactName = objScript.GetInteractableID();               
-        //makes interact obj pos into screen pos for displaying
-        Vector2 displPos = Camera.main.WorldToScreenPoint(objectPos);
+        string interactName = objScript.GetInteractableID();                       
         //sets text of notification based on what object they are about to interact
         InteractionDisplay.GetComponent<TextMeshProUGUI>().text = $"Press [RMB] to interact with {interactName}";
         InteractionDisplay.SetActive(true);
          //sets UI element into position of object to interact
-        InteractionDisplay.transform.position = displPos;
+        InteractionDisplay.transform.position = Input.mousePosition;
     }
 
     public void SetCanMove(bool value){
@@ -131,13 +156,15 @@ public class PlayerControllerScript : MonoBehaviour
     }
 
     private void DoPlayerDeath(){
-        Debug.Log("Player has died(requires more polishing)");
+        Debug.Log("Player has died");
+        DestroyOverNetwork();
+        GameOverPanel.SetActive(true);
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collider){
         if(collider.gameObject.CompareTag("Enemy")){
-            healthScr.takeDamage(50);
-            Debug.Log("function requires more polishing");
+            healthScr.takeDamage(collider.gameObject.GetComponent<MeleeMinion>().GetDamage());
         }
     }
     private void CameraFollowPlayer(){
@@ -146,12 +173,32 @@ public class PlayerControllerScript : MonoBehaviour
     public void SetGameObjectReferenceSource(GameObjectReferences GORScr){
         GORScript = GORScr;
         ReloadObjectReferences();
+        canMove = true;
 
     }
     //reloads references to UI Elements
     private void ReloadObjectReferences(){
         InteractionDisplay = GORScript.InteractionDisplayOBJ;
         healthScr.SetObjectReferences(GORScript.HealthBar,GORScript.HealthBarTxt);
+        WeaponsPool = GORScript.WeaponPoolList;
+        GameOverPanel = GORScript.GameOverPanel;
+    }
+    public void DestroyOverNetwork(){
+        photonView.RPC("RPCDestroyOverNetwork", RpcTarget.AllBuffered);
+    }
+    [PunRPC]
+    private void RPCDestroyOverNetwork()
+    {
+        // Only the player that spawned the object can destroy it
+        // Because the bullet is spawned by the player
+        if (photonView.IsMine)
+        {
+            PhotonNetwork.Destroy(this.gameObject);
+        }
+        else
+        {
+            isDestroyed = true;
+        }
     }
 
 
