@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 909686473755518979}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.783, y: 0, z: 0}
+  m_LocalPosition: {x: 1.311, y: 0.273, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40,9 +40,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6316715212689022493}
-  - component: {fileID: 3734205520646175254}
+  - component: {fileID: 4418904246005654046}
   m_Layer: 0
-  m_Name: Gun
+  m_Name: Pistol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +65,7 @@ Transform:
   - {fileID: 9117662451832035095}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3734205520646175254
+--- !u!114 &4418904246005654046
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,16 +74,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2329932407359735617}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 114f56f0e66536449831c940e5b0f2f1, type: 3}
+  m_Script: {fileID: 11500000, guid: 44a73c330bdc1f0468c1f565a4fc6a34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bullet: {fileID: 4452213505023057416, guid: 3617a4ba0ebec084ca3e23c633fed366, type: 3}
+  Bullet: {fileID: 2031998250564334634, guid: e3a941e6469583d48941d8253a1d0c88, type: 3}
   BulletSpawnPosition: {fileID: 909686473755518979}
-  GunName: Test Gun
-  Damage: 0
+  GunName: Pistol
+  Damage: 10
   FireRate: 0.25
   Spread: 0
-  GunDescription: Test Gun for script testing
+  GunDescription: Basic Gun
 --- !u!1 &8396905725946685375
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,7 +110,7 @@ Transform:
   m_GameObject: {fileID: 8396905725946685375}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.3, y: 0, z: -0.2}
+  m_LocalPosition: {x: 0.6, y: 0, z: -0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -157,7 +157,7 @@ SpriteRenderer:
   m_SortingLayerID: 554156231
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0ae2b74b1edd14bb18dd7b65ae916a54, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0da01ad99011f0f4c8cd9303045cd826, type: 3}
   m_Color: {r: 0.38993704, g: 0.3372097, b: 0.3372097, a: 1}
   m_FlipX: 0
   m_FlipY: 0

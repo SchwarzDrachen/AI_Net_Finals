@@ -20,6 +20,7 @@ public class ConnectionScript : MonoBehaviourPunCallbacks
     [SerializeField]private GameObject PlayerListItem;
     
     [SerializeField]private int MaxPlayersPerRoom = 4;
+    [SerializeField]private int LevelIDToLoad = 1;
     
     void Start()
     {
@@ -56,6 +57,7 @@ public class ConnectionScript : MonoBehaviourPunCallbacks
     //button functions
     public void StartGame(){
         LoadingTXT.SetActive(true);
+        PhotonNetwork.LoadLevel(2);
         //loads world
     }
     public void LeaveRoom(){        

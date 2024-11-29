@@ -3,21 +3,18 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class TestBullet : GenericBulletScript
+public class SimpleBullet : GenericBulletScript
 {
-    private float lifetime;
-    private Rigidbody2D rb;
     private void Awake(){
         //initialize values
-        rb = GetComponent<Rigidbody2D>();
-        this.lifetime = 1;
+        this.bulletLifetime = 1;
     }
     protected override void moveBullet()
     {
-        if (this.lifetime > 0){            
+        if (this.bulletLifetime > 0){            
             gameObject.transform.position += transform.right * (bulletSpeed/10);
 
-            this.lifetime -= Time.deltaTime;
+            this.bulletLifetime -= Time.deltaTime;
         }
         else{
             Destroy(gameObject);
@@ -30,7 +27,7 @@ public class TestBullet : GenericBulletScript
 
     private void OnCollisionEnter2D(Collision2D collider){
         if(collider.gameObject.CompareTag("Enemy")){
-            collider.gameObject.GetComponent<HealthScript>().takeDamage(10);
+            collider.gameObject.GetComponent<HealthScript>().takeDamage((int)bulletDamage);
         }
         Destroy(this.gameObject);
     }

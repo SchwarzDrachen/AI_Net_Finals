@@ -6,6 +6,8 @@ public class ShopScript : GenericInteractableScript
 {
     [SerializeField]private GameObject ShopUI;
     [SerializeField]private GameObject ShopItemListBox;
+    [SerializeField]private GameObject GunInfoPanel;
+
     private List<ShopItemScript> ShopItemList = new();    
     private PlayerControllerScript playerScr;
     
@@ -28,6 +30,10 @@ public class ShopScript : GenericInteractableScript
         foreach(ShopItemScript item in ShopItemList){
             item.SetPlayerInteracted(playerScr);
         }
+
+        //closes gun info panel on start
+        GunInfoPanel.SetActive(false);
+
     }
 
     public void CloseShop(){                

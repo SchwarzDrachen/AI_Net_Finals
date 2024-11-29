@@ -14,11 +14,13 @@ public class ShopItemScript : MonoBehaviour
     [SerializeField]private TextMeshProUGUI GunNameListItemTXT;
     [SerializeField]private TextMeshProUGUI GunCostListItemTXT;
     [SerializeField]private int GunCost;
+    [SerializeField]private GameObject GunInfoPanel;
     private GenericGunScript GunInfo;
     private PlayerControllerScript interactedPlayer;
 
     void Awake(){
         GunInfo = GunObject.GetComponent<GenericGunScript>();
+        UpdateListItemInfo();
     }
 
     public void BuyGun(){
@@ -28,6 +30,7 @@ public class ShopItemScript : MonoBehaviour
     public void ShowGunItemInfo(){
         GunInfoNameTXT.text = GunInfo.Get_GunName();
         GunStatsTXT.text = $"Damage: {GunInfo.Get_GunDamage()}<br>FireRate: {GunInfo.Get_GunFireRate()}<br>Spread: {GunInfo.Get_GunSpread()}<br>Description:<br>{GunInfo.Get_GunDesc()}<br>";
+        GunInfoPanel.SetActive(true);
 
     }
 
@@ -39,6 +42,11 @@ public class ShopItemScript : MonoBehaviour
 
     public void ClearInteractedPlayerInfo(){
         interactedPlayer = null;
+    }
+
+    private void UpdateListItemInfo(){
+        GunNameListItemTXT.text = GunInfo.Get_GunName();
+        GunCostListItemTXT.text = GunCost.ToString();
     }
 
 }

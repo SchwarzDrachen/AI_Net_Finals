@@ -6,10 +6,11 @@ using UnityEngine.AI;
 public class MeleeMinion : MonoBehaviour
 {
     [SerializeField]private GameObject targetMarker; 
-    [SerializeField]
-    private GameObject agentObject;
-    [SerializeField]
-    private HealthScript health;
+    
+    [SerializeField]private GameObject agentObject;
+    
+    [SerializeField]private HealthScript health;
+    [SerializeField]private GameObject playerList;
     private NavMeshAgent agent;
     
     private Rigidbody2D agentBody;
@@ -17,8 +18,8 @@ public class MeleeMinion : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
 		agent.updateUpAxis = false;
+        health.ResetHealth();
         //must polish function
-        targetMarker = GameObject.FindGameObjectWithTag("Player");
         
     }
 
@@ -29,12 +30,16 @@ public class MeleeMinion : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
+        if(playerList.transform.childCount > 0){
+            GetNearestPlayer();
+        }
+        
 
         if(agentObject.transform.position.z != 0){            
            agentObject.transform.position = new Vector3(agentObject.transform.position.x,agentObject.transform.position.y,0); 
         }
 
-        if(targetMarker.transform.position == null){
+        if(targetMarker == null){
             Debug.Log("NO TARGET!");
         }
         else{
@@ -56,5 +61,26 @@ public class MeleeMinion : MonoBehaviour
         if(col.gameObject.tag == "Wall"){
             Physics2D.IgnoreCollision(col.collider,GetComponent<Collider2D>());
         }
+    }
+
+    private void GetNearestPlayer(){
+        GameObject nearest = null;
+        foreach(Transform player in playerList.transform){
+            if(nearest == null){
+                nearest = player.gameObject;
+                return;
+            }
+            float nearestcompdist = Vector2.Distance(transform.position, nearest.transform.position);
+            float currentcompdist = Vector2.Distance(transform.position, player.transform.position);
+            if(currentcompdist< nearestcompdist){
+                nearest = player.gameObject;
+            }
+        }
+        targetMarker = nearest;
+
+    }
+    public void SetPlayerList(GameObject value){
+        playerList = value;
+
     }
 }

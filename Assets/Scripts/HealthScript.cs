@@ -7,7 +7,7 @@ using Unity.Mathematics;
 
 public class HealthScript : MonoBehaviour
 {
-    private float currentHealth;
+    [SerializeField] private float currentHealth;
     [SerializeField] private float maxHealth = 100;
 
     [SerializeField] private GameObject HealthBar;
@@ -19,9 +19,7 @@ public class HealthScript : MonoBehaviour
 
     // }
     public void Start(){
-        ResetHealth();
-        //UpdateHealthBar();
-
+        
     }
 
     public bool isAlive(){
@@ -77,6 +75,12 @@ public class HealthScript : MonoBehaviour
     public void ResetHealth(){
         currentHealth = maxHealth;
         //UpdateHealthBar();
+    }
+
+    public void SetObjectReferences(GameObject healthBar, TextMeshProUGUI healthValueLabel){
+        HealthBar = healthBar;
+        HealthValueLabel = healthValueLabel;
+        UpdateHealthBar();
     }
 
 

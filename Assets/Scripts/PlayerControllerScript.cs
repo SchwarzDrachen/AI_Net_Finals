@@ -14,9 +14,10 @@ public class PlayerControllerScript : MonoBehaviour
     [SerializeField]private GameObject playerSprite;
     [SerializeField]private GameObject currentGun;
     [SerializeField]private float interactDistance;  
-    [SerializeField] private HealthScript healthScr;
-
+    [SerializeField]private HealthScript healthScr;    
     [SerializeField]private GameObject InteractionDisplay;
+    //for ease in use referencing UI elements
+    [SerializeField]private GameObjectReferences GORScript;
 
     private Vector3 currentSpeed;
     private float timeCounter;
@@ -28,6 +29,7 @@ public class PlayerControllerScript : MonoBehaviour
         }
         if(canMove){
             MovementScript();
+            CameraFollowPlayer();
             FlipSpriteOnDirection();
             AimGun();
             Interact();
@@ -41,6 +43,13 @@ public class PlayerControllerScript : MonoBehaviour
     }
     private void Awake(){
         InteractionDisplay.SetActive(false);
+        healthScr.ResetHealth();
+    }
+    private void OnEnable(){
+        Debug.Log("initializing Player Values"); 
+        if(GORScript != null){
+            ReloadObjectReferences();
+        }
     }
 
     private void MovementScript(){
@@ -78,6 +87,7 @@ public class PlayerControllerScript : MonoBehaviour
         GameObject newGun = Instantiate(gun);
         newGun.transform.SetParent(gunHolder.transform);
         newGun.transform.localPosition = new Vector2(0,0);
+        newGun.transform.localRotation = Quaternion.Euler(0,0,0);
 
         currentGun = newGun;
     }
@@ -124,13 +134,25 @@ public class PlayerControllerScript : MonoBehaviour
         Debug.Log("Player has died(requires more polishing)");
     }
 
-     private void OnCollisionEnter2D(Collision2D collider){
+    private void OnCollisionEnter2D(Collision2D collider){
         if(collider.gameObject.CompareTag("Enemy")){
             healthScr.takeDamage(50);
             Debug.Log("function requires more polishing");
         }
     }
+    private void CameraFollowPlayer(){
+        Camera.main.transform.position = new Vector3(gameObject.transform.position.x,gameObject.transform.position.y, -100);
+    }
+    public void SetGameObjectReferenceSource(GameObjectReferences GORScr){
+        GORScript = GORScr;
+        ReloadObjectReferences();
 
+    }
+    //reloads references to UI Elements
+    private void ReloadObjectReferences(){
+        InteractionDisplay = GORScript.InteractionDisplayOBJ;
+        healthScr.SetObjectReferences(GORScript.HealthBar,GORScript.HealthBarTxt);
+    }
 
 
 }
