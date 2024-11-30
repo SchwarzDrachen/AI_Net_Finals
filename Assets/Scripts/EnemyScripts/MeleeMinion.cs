@@ -16,6 +16,8 @@ public class MeleeMinion : MonoBehaviourPunCallbacks
     [SerializeField]private HealthScript health;
     [SerializeField]private GameObject playerList;
     [SerializeField]private float attackDamage;
+    [SerializeField]private float attackCooldown;
+    private float attackCurrentCooldown = 0;
     private NavMeshAgent agent;
     
     private Rigidbody2D agentBody;
@@ -53,6 +55,7 @@ public class MeleeMinion : MonoBehaviourPunCallbacks
             FlipSpriteOnDirection();
             agent.SetDestination(targetMarker.transform.position);
         }
+        attackCurrentCooldown -= Time.deltaTime;
     }
 
     private void FlipSpriteOnDirection(){
@@ -118,5 +121,11 @@ public class MeleeMinion : MonoBehaviourPunCallbacks
 
     public void GiveScoreToLastHit(){
         GameManagerScript.Instance.AddScore(100,LastPlayerHit);
+    }
+    public void ResetAttackCooldown(){
+        attackCurrentCooldown = attackCooldown;
+    }
+    public float GetAttackCooldown(){
+        return attackCurrentCooldown;
     }
 }

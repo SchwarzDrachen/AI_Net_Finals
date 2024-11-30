@@ -164,8 +164,12 @@ public class PlayerControllerScript : MonoBehaviourPunCallbacks
 
     private void OnCollisionEnter2D(Collision2D collider){
         if(collider.gameObject.CompareTag("Enemy")){
-            healthScr.takeDamage(collider.gameObject.GetComponent<MeleeMinion>().GetDamage());
-            healthScr.UpdateHealthBar();
+            if(collider.gameObject.GetComponent<MeleeMinion>().GetAttackCooldown() <= 0){
+                healthScr.takeDamage(collider.gameObject.GetComponent<MeleeMinion>().GetDamage());
+                healthScr.UpdateHealthBar();
+                collider.gameObject.GetComponent<MeleeMinion>().ResetAttackCooldown();
+            }
+            
         }
         else if(collider.gameObject.CompareTag("Boss")){
             healthScr.takeDamage(collider.gameObject.GetComponent<BossBT>().GetDamage());
