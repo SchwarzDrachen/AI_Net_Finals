@@ -30,10 +30,10 @@ public class PlayerControllerScript : MonoBehaviourPunCallbacks
     RaycastHit2D raycast;
     Vector2 mouseWorldPos;
     private void Update(){
+        if (!photonView.IsMine) return;
         if(healthScr.isAlive() == false){
             DoPlayerDeath();
-        }
-        if (!photonView.IsMine) return;
+        }        
         if(canMove){
             MovementScript();
             CameraFollowPlayer();
@@ -157,8 +157,9 @@ public class PlayerControllerScript : MonoBehaviourPunCallbacks
 
     private void DoPlayerDeath(){
         Debug.Log("Player has died");
-        DestroyOverNetwork();
         GameOverPanel.SetActive(true);
+        DestroyOverNetwork();
+        
         
     }
 
