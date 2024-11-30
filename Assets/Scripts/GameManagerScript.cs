@@ -22,11 +22,12 @@ public class GameManagerScript : SingletonPUN<GameManagerScript>
     [SerializeField]private GameObject PlayersList;
     [SerializeField]private GameObject WinPanel;
     [SerializeField]private string Enemy = "MeleeEnemy";
+    [SerializeField]private string Boss = "Boss";
     private Player playerLocal;
     private void Start(){
      enemiesLeftToSpawn = BaseEnemyWaveCount;
      enemiesLeftToKill = BaseEnemyWaveCount;
-     CurrentWave = 1;
+     CurrentWave = 5;
     }
    public void AddScore(int value, Player player){
         player.AddScore(value);        
@@ -38,17 +39,28 @@ public class GameManagerScript : SingletonPUN<GameManagerScript>
         ScoreDisplayTXT.text = $"Gold: {score}";
    }
    private void SpawnEnemy(){
-     
-     if(SpawnerCountdown <= 0 && enemiesLeftToSpawn > 0){
+     if(CurrentWave < 5){
+        if(SpawnerCountdown <= 0 && enemiesLeftToSpawn > 0){
+            int r = Random.Range(0, Spawners.Length-1);
+            Vector3 SpawnPos = Spawners[r].transform.position;
+            GameObject testenemy = PhotonNetwork.Instantiate(Enemy, SpawnPos, Quaternion.identity);
+            testenemy.GetComponent<MeleeMinion>().SetPlayerList(PlayersList);
+            SpawnerCountdown = SpawnerFrequency;
+            enemiesLeftToSpawn--;
+        }
+      SpawnerCountdown -= Time.deltaTime;
+     }
+     else{
+        if(SpawnerCountdown <= 0 && enemiesLeftToSpawn > 0){
           int r = Random.Range(0, Spawners.Length-1);
           Vector3 SpawnPos = Spawners[r].transform.position;
-          GameObject testenemy = PhotonNetwork.Instantiate(Enemy, SpawnPos, Quaternion.identity);
-          testenemy.GetComponent<MeleeMinion>().SetPlayerList(PlayersList);
+          GameObject boss = PhotonNetwork.Instantiate(Boss, SpawnPos, Quaternion.identity);
+          boss.GetComponent<BossBT>().SetPlayerList(PlayersList);
           SpawnerCountdown = SpawnerFrequency;
           enemiesLeftToSpawn--;
+        }
+      SpawnerCountdown -= Time.deltaTime;
      }
-     SpawnerCountdown -= Time.deltaTime;
-     
    }
    private void UpdateEnemyCount(){
     EnemyCountDisplayTXT.text = $"Enemies Left: {enemiesLeftToKill}";

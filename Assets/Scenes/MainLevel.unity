@@ -733,6 +733,10 @@ PrefabInstance:
       value: -20.11
       objectReference: {fileID: 0}
     - target: {fileID: 4586473129054573960, guid: 28d535d32c63a6f46af13ac83c875b95, type: 3}
+      propertyPath: GunCost
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586473129054573960, guid: 28d535d32c63a6f46af13ac83c875b95, type: 3}
       propertyPath: GunObject
       value: 
       objectReference: {fileID: 2329932407359735617, guid: 573f1eb0cea3e154eaa735c96e3fdb3c, type: 3}
@@ -1812,6 +1816,10 @@ PrefabInstance:
     - target: {fileID: 3922224106799089538, guid: 28d535d32c63a6f46af13ac83c875b95, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -20.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4586473129054573960, guid: 28d535d32c63a6f46af13ac83c875b95, type: 3}
+      propertyPath: GunCost
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 4586473129054573960, guid: 28d535d32c63a6f46af13ac83c875b95, type: 3}
       propertyPath: GunObject
@@ -2920,6 +2928,11 @@ MonoBehaviour:
     parent: {fileID: 495695362}
     amountToPool: 10
     shouldExpand: 1
+  - id: Boss
+    objectToPool: {fileID: 299626530165631323, guid: 79e7321bf751d89448add250f257153f, type: 3}
+    parent: {fileID: 495695362}
+    amountToPool: 1
+    shouldExpand: 0
   pooledObjects: []
 --- !u!1 &1160524244
 GameObject:
@@ -3812,6 +3825,7 @@ MonoBehaviour:
   PlayersList: {fileID: 1945718887}
   WinPanel: {fileID: 433600736}
   Enemy: MeleeEnemy
+  Boss: Boss
 --- !u!114 &2046246010
 MonoBehaviour:
   m_ObjectHideFlags: 0
