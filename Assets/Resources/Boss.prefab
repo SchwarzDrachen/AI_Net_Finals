@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 7733217823777865116}
   m_Layer: 7
   m_Name: Boss
-  m_TagString: Enemy
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51,7 +51,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 1.5
-  m_Speed: 8
+  m_Speed: 7.5
   m_Acceleration: 10
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -411,13 +411,17 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 4.4858932
       objectReference: {fileID: 0}
+    - target: {fileID: 8685807551114105023, guid: a616b11637c36de40bae6634215de7c1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.01
+      objectReference: {fileID: 0}
     - target: {fileID: 9117662451832035095, guid: a616b11637c36de40bae6634215de7c1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.46
+      value: 3.33
       objectReference: {fileID: 0}
     - target: {fileID: 9117662451832035095, guid: a616b11637c36de40bae6634215de7c1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.07
+      value: -0.03
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

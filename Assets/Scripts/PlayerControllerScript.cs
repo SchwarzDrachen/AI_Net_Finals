@@ -167,6 +167,10 @@ public class PlayerControllerScript : MonoBehaviourPunCallbacks
             healthScr.takeDamage(collider.gameObject.GetComponent<MeleeMinion>().GetDamage());
             healthScr.UpdateHealthBar();
         }
+        else if(collider.gameObject.CompareTag("Boss")){
+            healthScr.takeDamage(collider.gameObject.GetComponent<BossBT>().GetDamage());
+            healthScr.UpdateHealthBar();
+        }
     }
     private void CameraFollowPlayer(){
         Camera.main.transform.position = new Vector3(gameObject.transform.position.x,gameObject.transform.position.y, -100);
@@ -202,5 +206,7 @@ public class PlayerControllerScript : MonoBehaviourPunCallbacks
         }
     }
 
-
+    public void TakeDamage(float damage){        
+        healthScr.takeDamage(damage);        
+    }
 }

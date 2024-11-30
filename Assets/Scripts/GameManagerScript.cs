@@ -27,7 +27,7 @@ public class GameManagerScript : SingletonPUN<GameManagerScript>
     private void Start(){
      enemiesLeftToSpawn = BaseEnemyWaveCount;
      enemiesLeftToKill = BaseEnemyWaveCount;
-     CurrentWave = 5;
+     CurrentWave = 1;
     }
    public void AddScore(int value, Player player){
         player.AddScore(value);        
@@ -48,7 +48,6 @@ public class GameManagerScript : SingletonPUN<GameManagerScript>
             SpawnerCountdown = SpawnerFrequency;
             enemiesLeftToSpawn--;
         }
-      SpawnerCountdown -= Time.deltaTime;
      }
      else{
         if(SpawnerCountdown <= 0 && enemiesLeftToSpawn > 0){
@@ -59,8 +58,8 @@ public class GameManagerScript : SingletonPUN<GameManagerScript>
           SpawnerCountdown = SpawnerFrequency;
           enemiesLeftToSpawn--;
         }
-      SpawnerCountdown -= Time.deltaTime;
      }
+    SpawnerCountdown -= Time.deltaTime;
    }
    private void UpdateEnemyCount(){
     EnemyCountDisplayTXT.text = $"Enemies Left: {enemiesLeftToKill}";
@@ -85,6 +84,10 @@ public class GameManagerScript : SingletonPUN<GameManagerScript>
                CurrentWave++;
                enemiesLeftToSpawn = BaseEnemyWaveCount * CurrentWave;
                enemiesLeftToKill = enemiesLeftToSpawn;
+               if(CurrentWave == 5){
+                enemiesLeftToSpawn = 1;
+                enemiesLeftToKill = 1;
+               }
           }
     }
     

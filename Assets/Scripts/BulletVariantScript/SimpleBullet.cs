@@ -38,6 +38,16 @@ public class SimpleBullet : GenericBulletScript
             enemyScr.SetLastPlayerHit(owner);
 
         }
+        else if(collider.gameObject.CompareTag("Boss")){
+            BossBT enemyScr = collider.gameObject.GetComponent<BossBT>();
+            enemyScr.TakeDamage(bulletDamage);
+            enemyScr.SetLastPlayerHit(owner);
+
+        }
+        else if(collider.gameObject.CompareTag("Player")){
+            PlayerControllerScript playerScr = collider.gameObject.GetComponent<PlayerControllerScript>();
+            playerScr.TakeDamage(bulletDamage);
+        }
         DestroyOverNetwork();
     }
 

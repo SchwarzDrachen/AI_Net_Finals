@@ -89,8 +89,9 @@ public class BossBT : MonoBehaviourPunCallbacks
         return NodeState.SUCCESS;    
     }
     private NodeState Attack(){
-            agent.speed = 5f;
-            Vector3 targetPos = new Vector3(target.transform.position.x, target.transform.position.y,0f);
+        agent.SetDestination(target.transform.position);
+
+        Vector3 targetPos = new Vector3(target.transform.position.x, target.transform.position.y,0f);
             Vector3 agentPos = new Vector3(transform.position.x,transform.position.y,0f);
             Vector3 gunAimPos = targetPos - agentPos;
             float aimAngle = Mathf.Atan2(gunAimPos.y, gunAimPos.x) * Mathf.Rad2Deg;        
@@ -101,7 +102,7 @@ public class BossBT : MonoBehaviourPunCallbacks
             }
             FIRE = StartCoroutine(Shoot());
 
-            return NodeState.SUCCESS;
+        return NodeState.SUCCESS;
     }
 
     private IEnumerator Shoot(){
