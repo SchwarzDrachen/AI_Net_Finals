@@ -55,6 +55,7 @@ public class BossBT : MonoBehaviourPunCallbacks
     }
 
     private void Update(){
+        FlipSpriteOnDirection();
         rootNode.Evaluate();
     }
     private NodeState HealthChecker(){

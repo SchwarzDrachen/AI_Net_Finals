@@ -27,7 +27,7 @@ public class GameManagerScript : SingletonPUN<GameManagerScript>
     private void Start(){
      enemiesLeftToSpawn = BaseEnemyWaveCount;
      enemiesLeftToKill = BaseEnemyWaveCount;
-     CurrentWave = 1;
+     CurrentWave = 4;
     }
    public void AddScore(int value, Player player){
         player.AddScore(value);        
