@@ -64,7 +64,7 @@ public class GameManagerScript : SingletonPUN<GameManagerScript>
    private void UpdateEnemyCount(){
     EnemyCountDisplayTXT.text = $"Enemies Left: {enemiesLeftToKill}";
    }
-   public void ModifyEnemyCount(int value){
+   public void ModifyEnemyCount(int value){     
      photonView.RPC("ModifyEnemyCountRPC", RpcTarget.AllBuffered,value);
    }
    [PunRPC]

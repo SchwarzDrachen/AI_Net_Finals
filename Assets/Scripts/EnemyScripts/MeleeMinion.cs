@@ -36,7 +36,7 @@ public class MeleeMinion : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if(!health.isAlive()){
+        if(!health.isAlive() && isDestroyed == false){
             GiveScoreToLastHit();
             DestroyOverNetwork();
             GameManagerScript.Instance.ModifyEnemyCount(-1);            
