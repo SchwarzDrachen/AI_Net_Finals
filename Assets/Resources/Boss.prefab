@@ -216,6 +216,7 @@ MonoBehaviour:
   currentGun: {fileID: 5104052932068887127}
   fireRateCooldown: 3
   playerList: {fileID: 0}
+  Sprite: {fileID: 6225707965113089198}
   agentObject: {fileID: 299626530165631323}
   attackDamage: 30
   health: {fileID: 1630548072179782170}
@@ -357,11 +358,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6316715212689022493, guid: a616b11637c36de40bae6634215de7c1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6316715212689022493, guid: a616b11637c36de40bae6634215de7c1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6316715212689022493, guid: a616b11637c36de40bae6634215de7c1, type: 3}
       propertyPath: m_LocalPosition.z

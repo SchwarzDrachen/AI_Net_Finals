@@ -208,5 +208,6 @@ public class PlayerControllerScript : MonoBehaviourPunCallbacks
 
     public void TakeDamage(float damage){        
         healthScr.takeDamage(damage);        
+        healthScr.UpdateHealthBar();
     }
 }

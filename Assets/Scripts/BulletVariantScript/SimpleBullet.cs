@@ -46,7 +46,9 @@ public class SimpleBullet : GenericBulletScript
         }
         else if(collider.gameObject.CompareTag("Player")){
             PlayerControllerScript playerScr = collider.gameObject.GetComponent<PlayerControllerScript>();
-            playerScr.TakeDamage(bulletDamage);
+            Debug.Log("taking damage");
+            playerScr.TakeDamage(bulletDamage);            
+            Debug.Log("DamageApplioed");
         }
         DestroyOverNetwork();
     }

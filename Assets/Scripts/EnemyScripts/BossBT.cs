@@ -16,6 +16,7 @@ public class BossBT : MonoBehaviourPunCallbacks
     [SerializeField]private GameObject currentGun;
     [SerializeField] private float fireRateCooldown;
     [SerializeField]private GameObject playerList;
+    [SerializeField]private SpriteRenderer Sprite;
     [SerializeField]private GameObject agentObject;
     [SerializeField]private float attackDamage;
 
@@ -42,8 +43,7 @@ public class BossBT : MonoBehaviourPunCallbacks
 
     private void Start(){
         an_isDead = new ActionNode(HealthChecker);
-        an_randPlayer = new ActionNode(TargetClose
-);
+        an_randPlayer = new ActionNode(TargetClose);
         an_attack = new ActionNode(Attack);
 
         List<Node> childNodes = new();
@@ -54,9 +54,9 @@ public class BossBT : MonoBehaviourPunCallbacks
         rootNode = new Sequence(childNodes);
     }
 
-    private void Update(){
-        FlipSpriteOnDirection();
+    private void Update(){        
         rootNode.Evaluate();
+        FlipSpriteOnDirection();
     }
     private NodeState HealthChecker(){
         if(health.isAlive()){
@@ -114,10 +114,10 @@ public class BossBT : MonoBehaviourPunCallbacks
 
     private void FlipSpriteOnDirection(){
         if(agentObject.transform.position.x > target.transform.position.x){
-            agentObject.transform.localScale = new Vector3(-1,1,0);
+            Sprite.flipX = false;
         }
         else{
-            agentObject.transform.localScale = new Vector3(1,1,0);
+            Sprite.flipX = true;
         }
     }
     public void SetPlayerList(GameObject value){
